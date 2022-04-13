@@ -22,7 +22,7 @@ class WikiController extends Wiki
 		// Check permissions
 		if(!$this->grant->write_document) 
 		{
-			return new Object(-1, 'msg_not_permitted'); 
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 		
 		$entry = Context::get('entry');
@@ -316,7 +316,7 @@ class WikiController extends Wiki
 		// Check permissions
 		if(!$this->grant->write_comment) 
 		{
-			return new Object(-1, 'msg_not_permitted');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 		
 		// extract data required
@@ -327,7 +327,7 @@ class WikiController extends Wiki
 		$oDocument = $oDocumentModel->getDocument($obj->document_srl);
 		if(!$oDocument->isExists()) 
 		{
-			return new Object(-1, 'msg_not_permitted');
+			return nclass_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 		// Create object model of document module
 		$oCommentModel = &getModel('comment');
@@ -354,7 +354,7 @@ class WikiController extends Wiki
 				$parent_comment = $oCommentModel->getComment($obj->parent_srl);
 				if(!$parent_comment->comment_srl) 
 				{
-					return new Object(-1, 'msg_invalid_request');
+					return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 				}
 				$output = $oCommentController->insertComment($obj);
 			}
@@ -418,19 +418,19 @@ class WikiController extends Wiki
 		// Check permissions
 		if(!$this->grant->delete_document) 
 		{
-			return new Object(-1, 'msg_not_permitted'); 
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 		
 		$document_srl = Context::get('document_srl');
 		if(!$document_srl) 
 		{
-			return new Object(-1, 'msg_invalid_request'); 
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		
 		$oDocument = $oDocumentModel->getDocument($document_srl);
 		if(!$oDocument || !$oDocument->isExists()) 
 		{
-			return new Object(-1, 'msg_invalid_request');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		
 		$output = $oDocumentController->deleteDocument($oDocument->document_srl);
@@ -496,8 +496,8 @@ class WikiController extends Wiki
 		// Check permissions
 		if(!$this->grant->write_document)
 		{
-			return new Object(-1, 'msg_not_permitted');
-		}
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
+		} 
 		
 		// request arguments
 		$args = Context::gets('parent_srl', 'target_srl', 'source_srl');
@@ -506,7 +506,7 @@ class WikiController extends Wiki
 		$node = $output->data;
 		if(!$node->document_srl) 
 		{
-			return new Object('msg_invalid_request'); 
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		$args->module_srl = $node->module_srl; 
 		$args->title = $node->title;
@@ -591,7 +591,7 @@ class WikiController extends Wiki
 	{
 		if(!$this->grant->write_document) 
 		{
-			return new Object(-1, 'msg_not_permitted'); 
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 		return $this->recompileTree($this->module_srl);
 	}
@@ -621,7 +621,7 @@ class WikiController extends Wiki
 		
 		FileHandler::writeFile($dat_file, $buff); 
 		FileHandler::writeFile($xml_file, $xml_buff); 
-		return new Object();
+		return class_exists('BaseObject') ? new BaseObject() : new Object();
 	}
 	
 	/**
@@ -643,21 +643,21 @@ class WikiController extends Wiki
 			$oComment = $oCommentModel->getComment($comment_srl);
 			if(!$oComment->isExists()) 
 			{
-				return new Object(-1, 'msg_invalid_request');
+				return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 			}
 			if(!$oMemberModel->isValidPassword($oComment->get('password'), $password)) 
 			{
-					return new Object(-1, 'msg_invalid_password'); 
+					return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 			}
 			$oComment->setGrant();
 		} else {
 			// get the document information
 			$oDocumentModel = &getModel('document');
 			$oDocument = $oDocumentModel->getDocument($document_srl);
-			if(!$oDocument->isExists()) return new Object(-1, 'msg_invalid_request');
+			if(!$oDocument->isExists()) return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 
 			// compare the document password and the user input password
-			if(!$oMemberModel->isValidPassword($oDocument->get('password'),$password)) return new Object(-1, 'msg_invalid_password');
+			if(!$oMemberModel->isValidPassword($oDocument->get('password'),$password)) return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_password') : new Object(-1, 'msg_invalid_password');
 
 			$oDocument->setGrant();
 
