@@ -113,7 +113,7 @@ class WikiAdminController extends Wiki
 		$module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
 		if(!$module_info->module_srl || $module_info->module != 'wiki')
 		{
-			return new Object(-1, 'msg_invalid_request');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		// Wiki article of the target entry has no value extraction
 		$args->module_srl = $module_srl;
@@ -121,7 +121,7 @@ class WikiAdminController extends Wiki
 
 		if(!$output->toBool() || !$output->data)
 		{
-			return new Object();
+			return class_exists('BaseObject') ? new BaseObject() : new Object();
 		}
 
 		foreach($output->data as $key => $val)
