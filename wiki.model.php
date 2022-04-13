@@ -28,7 +28,7 @@
 			header("Cache-Control: post-check=0, pre-check=0", false);
 			header("Pragma: no-cache");
 
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+			if(!$this->module_srl) return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 
 			$xml_file = sprintf('%sfiles/cache/wiki/%d.xml', _XE_PATH_,$this->module_srl);
 			if(!file_exists($xml_file)) $oWikiController->loadWikiTreeList($this->module_srl);
@@ -44,7 +44,7 @@
 		function readWikiTreeCache($module_srl) {
 		    	
 			$oWikiController = &getController('wiki');
-			if(!$module_srl) return new Object(-1,'msg_invalid_request');
+			if(!$module_srl) return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 
 			$dat_file = sprintf('%sfiles/cache/wiki/%d.dat', _XE_PATH_,$module_srl);
 			if(!file_exists($dat_file)) $oWikiController->recompileTree($module_srl);
