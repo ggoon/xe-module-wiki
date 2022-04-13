@@ -140,7 +140,7 @@ class WikiView extends Wiki
 		$security = new Security();
 		$security->encodeHTML('histories..nick_name');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
     /**
@@ -154,7 +154,7 @@ class WikiView extends Wiki
 
         if(!$old_history_srl || !$document_srl)
         {
-            return new Object(-1, 'msg_invalid_request');
+            return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
         }
 
         $oDocumentModel = &getModel('document');
@@ -220,7 +220,7 @@ class WikiView extends Wiki
 
         $this->setTemplateFile('document_compare');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'ok') : new Object(0, 'ok');
     }
 
 	/**
@@ -308,7 +308,7 @@ class WikiView extends Wiki
 		}
 		$this->setTemplateFile('document_edit');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -329,7 +329,7 @@ class WikiView extends Wiki
 		Context::set('message', $msg);
 		$this->setTemplateFile('message');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -374,7 +374,7 @@ class WikiView extends Wiki
 		Context::set('search_option', $search_option);
 		$this->setTemplateFile('title_index');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -392,7 +392,7 @@ class WikiView extends Wiki
 		$security = new Security();
 		$security->encodeHTML('document_tree..');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -405,13 +405,13 @@ class WikiView extends Wiki
 	{
 		if(!$this->grant->write_document)
 		{
-			return new Object(-1, 'msg_not_permitted');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_permitted') : new Object(-1, 'msg_not_permitted');
 		}
 
 		Context::set('isManageGranted', $this->grant->write_document ? 'true' : 'false');
 		$this->setTemplateFile('modify_tree');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -517,7 +517,7 @@ class WikiView extends Wiki
 			else
 			{
 				Context::set('document_srl', '', TRUE);
-				return new Object(-1, 'msg_not_founded');
+				return class_exists('BaseObject') ? new BaseObject(-1, 'msg_not_founded') : new Object(-1, 'msg_not_founded');
 			}
 		} // generate an empty document object if you do not have a document_srl for requested document
 		else
@@ -630,7 +630,7 @@ class WikiView extends Wiki
 			}
 			$this->setRedirectUrl($url);
 		}
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -653,7 +653,7 @@ class WikiView extends Wiki
 		// Return message error if there is no parent_srl
 		if(!$parent_srl)
 		{
-			return new Object(-1, 'msg_invalid_request');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		// Look for the comment
 		$oCommentModel = &getModel('comment');
@@ -678,7 +678,7 @@ class WikiView extends Wiki
 		Context::set('oComment', $oComment);
 		$this->setTemplateFile('comment_edit');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -702,7 +702,7 @@ class WikiView extends Wiki
 		// If you do not have error for specified comment
 		if(!$comment_srl)
 		{
-			return new Object(-1, 'msg_invalid_request');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		// Look for the comment
 		$oCommentModel = &getModel('comment');
@@ -724,7 +724,7 @@ class WikiView extends Wiki
 
 		$this->setTemplateFile('comment_edit');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -766,7 +766,7 @@ class WikiView extends Wiki
 		Context::set('oComment', $oComment);
 		$this->setTemplateFile('delete_comment_form');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -780,7 +780,7 @@ class WikiView extends Wiki
 		// allow only logged in users to comment.
 		if(!Context::get('is_logged'))
 		{
-			return new Object(-1, 'login_to_comment');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'login_to_comment') : new Object(-1, 'login_to_comment');
 		}
 		$document_srl = Context::get('document_srl');
 
@@ -788,11 +788,11 @@ class WikiView extends Wiki
 		$oDocument = $oDocumentModel->getDocument($document_srl);
 		if(!$oDocument->isExists())
 		{
-			return new Object(-1, 'msg_invalid_request');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'msg_invalid_request') : new Object(-1, 'msg_invalid_request');
 		}
 		if(!$oDocument->allowComment())
 		{
-			return new Object(-1, 'comments_disabled');
+			return class_exists('BaseObject') ? new BaseObject(-1, 'comments_disabled') : new Object(-1, 'comments_disabled');
 		}
 		Context::set('oDocument', $oDocument);
 		$oModuleModel = &getModel('module');
@@ -808,7 +808,7 @@ class WikiView extends Wiki
 		$oTemplateHandler = TemplateHandler::getInstance();
 		$this->add('html', $oTemplateHandler->compile($skin_path, 'comment_edit.html'));
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
@@ -1017,7 +1017,7 @@ class WikiView extends Wiki
 
 		$this->setTemplateFile('document_search');
 
-		return new Object(0, 'success');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success') : new Object(0, 'success');
 	}
 
 	/**
