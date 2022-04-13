@@ -133,7 +133,7 @@ class Wiki extends ModuleObject /* implements WikiSite // Commented for backward
 	 */
 	function moduleInstall() 
 	{
-		return new Object();
+		return class_exists('BaseObject') ? new BaseObject() : new Object();
 	}
 	
 	/**
@@ -184,7 +184,7 @@ class Wiki extends ModuleObject /* implements WikiSite // Commented for backward
 			$oModuleController->insertTrigger('menu.getModuleListInSitemap', 'wiki', 'model', 'triggerModuleListInSitemap', 'after');
 		}
 		
-		return new Object(0, 'success_updated');
+		return class_exists('BaseObject') ? new BaseObject(0, 'success_updated') : new Object(0, 'success_updated');
 	}
 	
 	/**
@@ -195,7 +195,7 @@ class Wiki extends ModuleObject /* implements WikiSite // Commented for backward
 	 */
 	function moduleUninstall() 
 	{
-		return new Object();
+		return class_exists('BaseObject') ? new BaseObject() : new Object();
 	}
 	
 	/**
@@ -211,7 +211,7 @@ class Wiki extends ModuleObject /* implements WikiSite // Commented for backward
 		{
 			$oCacheHandler->invalidateGroupKey("wikiContent");
 		}
-		return new Object();
+		return class_exists('BaseObject') ? new BaseObject() : new Object();
 	}
 	
 	/**
